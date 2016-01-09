@@ -25,7 +25,7 @@
 
 - (FMDatabaseQueue *)dbQueue{
     if (!_dbQueue) {
-        NSString *dbPath = [self getDBPath];
+        NSString *dbPath = [self getDBPathWithName:_dbName];
         _dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
     }
     
