@@ -9,6 +9,11 @@ Usage
 ==============
 You can use GSSqlHelper directly ,but I strongly propose inherit it.
 
+### CocoaPods
+
+1. Update cocoapods to the latest version.
+1. Add pod 'GSSqlHelper' to your Podfile.
+
 ```cpp
 TestDbHelper.h
 #import "GSSqlHelper.h"
