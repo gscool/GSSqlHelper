@@ -11,6 +11,11 @@
 #define kDBVersionTable @"versionTable"
 #define kColumnVersion @"cVersion"
 
+#ifdef DEBUG
+#define SHOWLOG(format,...) NSLog(format,##__VA_ARGS__)
+#else
+#define SHOWLOG(format,...) nil
+#endif
 @implementation GSSqlHelper
 
 - (id)initWithDbName:(NSString *)dbName andDbVersion:(NSInteger)dbVersion{
@@ -34,12 +39,12 @@
 
 - (void)createDB{
     NSString *dbPath = [self getDBPathWithName:_dbName];
-    showLog(@"create db to : %@",dbPath);
+    SHOWLOG(@"create db to : %@",dbPath);
     m_db = [FMDatabase databaseWithPath:dbPath];
     NSInteger oldDBVersion = [self getDBVersion];
     __weak __typeof(self)weakSelf = self;
     if (oldDBVersion == 0) {
-        showLog(@"Old database version is zero. create new database");
+        SHOWLOG(@"Old database version is zero. create new database");
         [self createVersionTable];
         if ([self respondsToSelector:@selector(onCreateDb:)]) {
             [self.dbQueue inDatabase:^(FMDatabase *db) {
@@ -53,7 +58,7 @@
                     [weakSelf onUpgradeDb:db FromOldDbVersion:oldDBVersion toNewDbVersion:_dbVersion];
                 }];
             }
-            showLog(@"upgrade database version to:%ld",(long)_dbVersion);
+            SHOWLOG(@"upgrade database version to:%ld",(long)_dbVersion);
             [self updateDbVersion:_dbVersion];
         }
     }
@@ -147,14 +152,5 @@
         NSString *updatesql = [NSString stringWithFormat:@"update %@ set %@=?",kDBVersionTable,kColumnVersion];
         [db executeUpdate:updatesql,numberVersion];
     }];
-}
-
-
-void showLog(NSString *format, ...){
-#ifndef DEBUG
-    va_list ap;
-    va_start(ap, format);
-    NSLog(format,ap);
-#endif
 }
 @end
