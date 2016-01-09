@@ -2,7 +2,7 @@
 //  GSSqlHelper.m
 //  GSSqlHelper
 //
-//  Created by 郭顺 on 16/1/8.
+//  Created by gscool on 16/1/8.
 //  Copyright © 2016年 gs. All rights reserved.
 //
 
